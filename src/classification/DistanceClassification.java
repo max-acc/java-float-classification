@@ -21,7 +21,8 @@ public class DistanceClassification {
     private int testDataRowCount;
     private int testDataColumnCount;
 
-    private String[][] predictedTestData;
+    private String[][][] predictedTestData;
+    private int[][] sortedProbability;
 
 
     protected DistanceClassification(float [][] trainingDataPredictors, String [] trainingDataResults, int rowCount, int columnCount, float density) {
@@ -54,7 +55,7 @@ public class DistanceClassification {
     }
 
     protected void testModel() {
-        testClassifcationModel();
+        testClassificationModel();
     }
 
     private void getClassificationClasses() {
@@ -141,10 +142,12 @@ public class DistanceClassification {
         }
     }
 
-    private void testClassifcationModel() {
-        this.predictedTestData = new String[testDataColumnCount][2];
+    private void testClassificationModel() {
+        this.predictedTestData = new String[this.testDataColumnCount][this.numberOfClasses][2];
+        this.sortedProbability = new int[this.testDataColumnCount][this.numberOfClasses];
 
         // Check the distance for every class
+
         for (int i = 0; i < this.testDataColumnCount; i++) {
             float[][] tempDelta = new float[this.numberOfClasses][this.rowCount];
             for (int j = 0; j < this.numberOfClasses; j++) {
@@ -152,28 +155,42 @@ public class DistanceClassification {
                     tempDelta[j][k] = this.featureMean[j][k] - this.testDataPredictors[i][k];
                 }
 
-                tempDelta[j][this.rowCount -1] = (float) Math.sqrt(
-                        Math.pow(tempDelta[j][0], 2) +
-                        Math.pow(tempDelta[j][1], 2) +
-                        Math.pow(tempDelta[j][2], 2) +
-                        Math.pow(tempDelta[j][3], 2));
-                System.out.print(classes[j] + " ");
-                System.out.println(tempDelta[j][this.rowCount -1]);
+                this.predictedTestData[i][j][0] = this.classes[j];
+                float tempCalcDistance = 0;
+
+                for (int k = 0; k < this.rowCount -1; k++) {
+                    tempCalcDistance += (float) Math.pow(tempDelta[j][k], 2);
+                }
+
+                tempDelta[j][this.rowCount -1] = (float) Math.sqrt(tempCalcDistance);
+                this.predictedTestData[i][j][1] = Float.toString(tempDelta[j][this.rowCount -1]);
+
+                System.out.print(" " + this.predictedTestData[i][j][0] + " ");
+                System.out.println(this.predictedTestData[i][j][1]);
+
+
+
+            }
+
+            for (int j = 0; j <this.numberOfClasses; j++) {
+                this.sortedProbability[i][j] = Integer.valueOf(this.predictedTestData[i][j][1]);
+
             }
 
 
+
+            break;
+            //int[] tempProbability = new int[this.numberOfClasses];
             /*
             for (int j = 0; j < this.numberOfClasses; j++) {
-                for (int k = 0; k < this.rowCount -1; k++) {
-                    System.out.print(tempDelta[j][k]);
-                    System.out.print(" ");
-                }
-                System.out.println();
+
             }
-            */
+
+
+
             this.predictedTestData[i][0] = "best result";
             this.predictedTestData[i][1] = "probability";
-
+*/
 
             //this.predictedTestData[i] = "best result";
         }

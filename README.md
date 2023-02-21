@@ -1,8 +1,1 @@
 # hello-world
-ljasdföagkhaösdkjflasdjföaksdjföahsdgöasjdf
-asdfadskfjalsdjf
-adsfjaösdfkjasödlkfja
-gadslkfjaödsljfasldkjföalsdkjfa
-sdfasdöfljadslfkjaösdf
-asdföalkdjföalsdkjfasd
-fasdöflkjasdlfjasödlfj
