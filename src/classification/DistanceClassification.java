@@ -171,15 +171,25 @@ public class DistanceClassification {
 
 
             }
-
+            float min = Float.valueOf(this.predictedTestData[i][0][1]);
+            int tempIndex = 0;
             for (int j = 0; j <this.numberOfClasses; j++) {
-                this.sortedProbability[i][j] = Integer.valueOf(this.predictedTestData[i][j][1]);
+                if (min > Float.valueOf(this.predictedTestData[i][j][1])) {
+                    min = Float.valueOf(this.predictedTestData[i][j][1]);
+                    tempIndex = j;
+
+                }
+
 
             }
+            this.sortedProbability[i][0] = tempIndex;
+            System.out.println(this.sortedProbability[i][0]);
 
 
+            if (i == 5) {
+                break;
+            }
 
-            break;
             //int[] tempProbability = new int[this.numberOfClasses];
             /*
             for (int j = 0; j < this.numberOfClasses; j++) {
