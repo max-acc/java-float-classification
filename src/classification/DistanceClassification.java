@@ -173,17 +173,23 @@ public class DistanceClassification {
             }
             float min = Float.valueOf(this.predictedTestData[i][0][1]);
             int tempIndex = 0;
+            this.sortedProbability[i][0] = tempIndex;
             for (int j = 0; j <this.numberOfClasses; j++) {
                 if (min > Float.valueOf(this.predictedTestData[i][j][1])) {
                     min = Float.valueOf(this.predictedTestData[i][j][1]);
                     tempIndex = j;
-
+                    if (this.sortedProbability[i][0] != 0) {
+                        for (int k = this.numberOfClasses -1; k > 0; k--) {
+                            this.sortedProbability[i][k] = this.sortedProbability[i][k -1];
+                        }
+                    }
+                    this.sortedProbability[i][0] = j;
                 }
-
-
             }
             this.sortedProbability[i][0] = tempIndex;
             System.out.println(this.sortedProbability[i][0]);
+            System.out.println(this.sortedProbability[i][1]);
+            System.out.println(this.sortedProbability[i][2]);
 
 
             if (i == 5) {
