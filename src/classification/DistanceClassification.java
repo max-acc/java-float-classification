@@ -172,27 +172,76 @@ public class DistanceClassification {
 
             }
             float min = Float.valueOf(this.predictedTestData[i][0][1]);
+
             int tempIndex = 0;
             this.sortedProbability[i][0] = tempIndex;
-            for (int j = 0; j <this.numberOfClasses; j++) {
+
+            for (int j = 0; j < this.numberOfClasses; j++) {
                 if (min > Float.valueOf(this.predictedTestData[i][j][1])) {
                     min = Float.valueOf(this.predictedTestData[i][j][1]);
                     tempIndex = j;
-                    if (this.sortedProbability[i][0] != 0) {
-                        for (int k = this.numberOfClasses -1; k > 0; k--) {
-                            this.sortedProbability[i][k] = this.sortedProbability[i][k -1];
-                        }
-                    }
-                    this.sortedProbability[i][0] = j;
                 }
             }
             this.sortedProbability[i][0] = tempIndex;
+            for (int j = 1; j < this.numberOfClasses; j++) {
+                tempIndex = 0;
+                this.sortedProbability[i][j] = tempIndex;
+                min = Float.valueOf(this.predictedTestData[i][this.sortedProbability[i][j-1]][1]);
+                for (int k = 0; k < this.numberOfClasses; k++) {
+                    //System.out.println("Min: " + min);
+                    //System.out.print(k + " ");
+                    //System.out.println(this.predictedTestData[i][k][1]);
+                    //System.out.println( Float.valueOf(this.predictedTestData[i][this.sortedProbability[i][j-1]][1]));
+                    if ((min > Float.valueOf(this.predictedTestData[i][k][1]) &&
+                            Float.valueOf(this.predictedTestData[i][k][1]) > Float.valueOf(this.predictedTestData[i][this.sortedProbability[i][j-1]][1])) ||
+                            (Float.valueOf(this.predictedTestData[i][k][1]) > Float.valueOf(this.predictedTestData[i][this.sortedProbability[i][j-1]][1]) &&
+                            min == Float.valueOf(this.predictedTestData[i][this.sortedProbability[i][j-1]][1]))) {
+                        if (min > Float.valueOf(this.predictedTestData[i][k][1]) &&
+                                Float.valueOf(this.predictedTestData[i][k][1]) > Float.valueOf(this.predictedTestData[i][this.sortedProbability[i][j-1]][1])) {
+                            //System.out.println("First condition");
+                        }
+                        if (Float.valueOf(this.predictedTestData[i][k][1]) > Float.valueOf(this.predictedTestData[i][this.sortedProbability[i][j-1]][1]) &&
+                                k != this.sortedProbability[i][j-1]) {
+                            //System.out.println("Second condition");
+                        }
+                        min = Float.valueOf(this.predictedTestData[i][k][1]);
+                        //System.out.println("new Min: " + min);
+                        tempIndex = k;
+                    }
+                }
+                this.sortedProbability[i][j] = tempIndex;
+                //System.out.println("Index " + tempIndex);
+            }
+              /*
+                for (int k = 0; k <this.numberOfClasses; k++) {
+                    if (j == k) {
+                        continue;
+                    }
+                    if (min > Float.valueOf(this.predictedTestData[i][k][1])) {
+                        min = Float.valueOf(this.predictedTestData[i][k][1]);
+                        tempIndex = j;
+                    }
+                    this.sortedProbability[i][k] = j;
+
+
+
+                            if (this.sortedProbability[i][0] != 0) {
+                                for (int l = this.numberOfClasses - 1; l > 0; l--) {
+                                    this.sortedProbability[i][k] = this.sortedProbability[i][k - 1];
+                                }
+                            }
+
+                        }
+                    }*/
+
+
+
             System.out.println(this.sortedProbability[i][0]);
             System.out.println(this.sortedProbability[i][1]);
             System.out.println(this.sortedProbability[i][2]);
 
 
-            if (i == 90) {
+            if (i == 5) {
                 break;
             }
 
