@@ -192,7 +192,7 @@ public class DistanceClassification {
             System.out.println(this.sortedProbability[i][2]);
 
 
-            if (i == 5) {
+            if (i == 90) {
                 break;
             }
 
