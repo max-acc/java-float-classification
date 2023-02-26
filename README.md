@@ -1,10 +1,11 @@
-# Classification of float values in Java
+# <p align="center"><b>Classification of float values in Java</b></p>
 
 
 ## Description
 
 
 ## Getting Started
+
 
 ### Dependencies
 
@@ -18,6 +19,9 @@
 ### Error Codes
 
 
+## Scripts
+
+
 ## Help
 
 
@@ -26,15 +30,10 @@
 Contributors names and contact info
 
 * Max Wenk  
-	*[@max-acc](https://github.com/max-acc)
+	* [@max-acc](https://github.com/max-acc)
 
 ## Version History
 
-* 0.2
-    * Various bug fixes and optimizations
-    * See [commit change]() or See [release history]()
-* 0.1
-    * Initial Release
 
 ## License
 
@@ -42,5 +41,4 @@ This project is licensed under the "GNU Affero General Public License v3.0" Lice
 
 ## Acknowledgments
 
-Inspiration, code snippets, etc.
 * [README Template](https://gist.github.com/DomPizzie/7a5ff55ffa9081f2de27c315f5018afc)
