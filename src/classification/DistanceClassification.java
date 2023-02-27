@@ -43,6 +43,14 @@ public class DistanceClassification {
         return this.sortedClassificationData;
     }
 
+    protected String[][][] getPredictedTestData() {
+        return this.predictedTestData;
+    }
+
+    protected int[][] getSortedProbability() {
+        return this.sortedProbability;
+    }
+
     protected float[][] getFeatureMean() {
         return this.featureMean;
     }
@@ -203,17 +211,6 @@ public class DistanceClassification {
                     }
                 }
                 this.sortedProbability[i][j] = tempIndex;
-            }
-
-
-
-            System.out.println(this.sortedProbability[i][0]);
-            System.out.println(this.sortedProbability[i][1]);
-            System.out.println(this.sortedProbability[i][2]);
-
-
-            if (i == 5) {
-                break;
             }
         }
     }

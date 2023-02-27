@@ -21,6 +21,8 @@ public class Main {
         ob.dataSubdivision();
         //System.out.println(ob.feedback()[0][2]);
         ob.distanceClassification();
+
+        ob.evaluateResults();
     }
 
 }
