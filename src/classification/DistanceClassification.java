@@ -188,51 +188,22 @@ public class DistanceClassification {
                 this.sortedProbability[i][j] = tempIndex;
                 min = Float.valueOf(this.predictedTestData[i][this.sortedProbability[i][j-1]][1]);
                 for (int k = 0; k < this.numberOfClasses; k++) {
-                    //System.out.println("Min: " + min);
-                    //System.out.print(k + " ");
-                    //System.out.println(this.predictedTestData[i][k][1]);
-                    //System.out.println( Float.valueOf(this.predictedTestData[i][this.sortedProbability[i][j-1]][1]));
                     if ((min > Float.valueOf(this.predictedTestData[i][k][1]) &&
                             Float.valueOf(this.predictedTestData[i][k][1]) > Float.valueOf(this.predictedTestData[i][this.sortedProbability[i][j-1]][1])) ||
                             (Float.valueOf(this.predictedTestData[i][k][1]) > Float.valueOf(this.predictedTestData[i][this.sortedProbability[i][j-1]][1]) &&
                             min == Float.valueOf(this.predictedTestData[i][this.sortedProbability[i][j-1]][1]))) {
                         if (min > Float.valueOf(this.predictedTestData[i][k][1]) &&
                                 Float.valueOf(this.predictedTestData[i][k][1]) > Float.valueOf(this.predictedTestData[i][this.sortedProbability[i][j-1]][1])) {
-                            //System.out.println("First condition");
                         }
                         if (Float.valueOf(this.predictedTestData[i][k][1]) > Float.valueOf(this.predictedTestData[i][this.sortedProbability[i][j-1]][1]) &&
                                 k != this.sortedProbability[i][j-1]) {
-                            //System.out.println("Second condition");
                         }
                         min = Float.valueOf(this.predictedTestData[i][k][1]);
-                        //System.out.println("new Min: " + min);
                         tempIndex = k;
                     }
                 }
                 this.sortedProbability[i][j] = tempIndex;
-                //System.out.println("Index " + tempIndex);
             }
-              /*
-                for (int k = 0; k <this.numberOfClasses; k++) {
-                    if (j == k) {
-                        continue;
-                    }
-                    if (min > Float.valueOf(this.predictedTestData[i][k][1])) {
-                        min = Float.valueOf(this.predictedTestData[i][k][1]);
-                        tempIndex = j;
-                    }
-                    this.sortedProbability[i][k] = j;
-
-
-
-                            if (this.sortedProbability[i][0] != 0) {
-                                for (int l = this.numberOfClasses - 1; l > 0; l--) {
-                                    this.sortedProbability[i][k] = this.sortedProbability[i][k - 1];
-                                }
-                            }
-
-                        }
-                    }*/
 
 
 
@@ -244,26 +215,6 @@ public class DistanceClassification {
             if (i == 5) {
                 break;
             }
-
-            //int[] tempProbability = new int[this.numberOfClasses];
-            /*
-            for (int j = 0; j < this.numberOfClasses; j++) {
-
-            }
-
-
-
-            this.predictedTestData[i][0] = "best result";
-            this.predictedTestData[i][1] = "probability";
-*/
-
-            //this.predictedTestData[i] = "best result";
         }
-
-
-
-
-
-
     }
 }
