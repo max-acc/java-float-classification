@@ -92,6 +92,7 @@ public class ClassificationOfFloatValues {
                 this.columnCount - this.numberOfTrainingData,
                 this.predictedTestData,
                 this.sortedProbability);
+        evaluationObject.confusionMatrix();
     }
     public void confusionMatrix() {
         if (this.MLAlgorithm == "DistanceClassification") {
