@@ -21,7 +21,8 @@ public class DistanceClassification {
     private int testDataRowCount;
     private int testDataColumnCount;
 
-    private String[][] predictedTestData;
+    private String[][][] predictedTestData;
+    private int[][] sortedProbability;
 
 
     protected DistanceClassification(float [][] trainingDataPredictors, String [] trainingDataResults, int rowCount, int columnCount, float density) {
@@ -42,6 +43,14 @@ public class DistanceClassification {
         return this.sortedClassificationData;
     }
 
+    protected String[][][] getPredictedTestData() {
+        return this.predictedTestData;
+    }
+
+    protected int[][] getSortedProbability() {
+        return this.sortedProbability;
+    }
+
     protected float[][] getFeatureMean() {
         return this.featureMean;
     }
@@ -54,7 +63,7 @@ public class DistanceClassification {
     }
 
     protected void testModel() {
-        testClassifcationModel();
+        testClassificationModel();
     }
 
     private void getClassificationClasses() {
@@ -141,10 +150,12 @@ public class DistanceClassification {
         }
     }
 
-    private void testClassifcationModel() {
-        this.predictedTestData = new String[testDataColumnCount][2];
+    private void testClassificationModel() {
+        this.predictedTestData = new String[this.testDataColumnCount][this.numberOfClasses][2];
+        this.sortedProbability = new int[this.testDataColumnCount][this.numberOfClasses];
 
         // Check the distance for every class
+
         for (int i = 0; i < this.testDataColumnCount; i++) {
             float[][] tempDelta = new float[this.numberOfClasses][this.rowCount];
             for (int j = 0; j < this.numberOfClasses; j++) {
@@ -152,36 +163,55 @@ public class DistanceClassification {
                     tempDelta[j][k] = this.featureMean[j][k] - this.testDataPredictors[i][k];
                 }
 
-                tempDelta[j][this.rowCount -1] = (float) Math.sqrt(
-                        Math.pow(tempDelta[j][0], 2) +
-                        Math.pow(tempDelta[j][1], 2) +
-                        Math.pow(tempDelta[j][2], 2) +
-                        Math.pow(tempDelta[j][3], 2));
-                System.out.print(classes[j] + " ");
-                System.out.println(tempDelta[j][this.rowCount -1]);
-            }
+                this.predictedTestData[i][j][0] = this.classes[j];
+                float tempCalcDistance = 0;
 
-
-            /*
-            for (int j = 0; j < this.numberOfClasses; j++) {
                 for (int k = 0; k < this.rowCount -1; k++) {
-                    System.out.print(tempDelta[j][k]);
-                    System.out.print(" ");
+                    tempCalcDistance += (float) Math.pow(tempDelta[j][k], 2);
                 }
-                System.out.println();
+
+                tempDelta[j][this.rowCount -1] = (float) Math.sqrt(tempCalcDistance);
+                this.predictedTestData[i][j][1] = Float.toString(tempDelta[j][this.rowCount -1]);
+
+                System.out.print(" " + this.predictedTestData[i][j][0] + " ");
+                System.out.println(this.predictedTestData[i][j][1]);
+
+
+
             }
-            */
-            this.predictedTestData[i][0] = "best result";
-            this.predictedTestData[i][1] = "probability";
+            float min = Float.valueOf(this.predictedTestData[i][0][1]);
 
+            int tempIndex = 0;
+            this.sortedProbability[i][0] = tempIndex;
 
-            //this.predictedTestData[i] = "best result";
+            for (int j = 0; j < this.numberOfClasses; j++) {
+                if (min > Float.valueOf(this.predictedTestData[i][j][1])) {
+                    min = Float.valueOf(this.predictedTestData[i][j][1]);
+                    tempIndex = j;
+                }
+            }
+            this.sortedProbability[i][0] = tempIndex;
+            for (int j = 1; j < this.numberOfClasses; j++) {
+                tempIndex = 0;
+                this.sortedProbability[i][j] = tempIndex;
+                min = Float.valueOf(this.predictedTestData[i][this.sortedProbability[i][j-1]][1]);
+                for (int k = 0; k < this.numberOfClasses; k++) {
+                    if ((min > Float.valueOf(this.predictedTestData[i][k][1]) &&
+                            Float.valueOf(this.predictedTestData[i][k][1]) > Float.valueOf(this.predictedTestData[i][this.sortedProbability[i][j-1]][1])) ||
+                            (Float.valueOf(this.predictedTestData[i][k][1]) > Float.valueOf(this.predictedTestData[i][this.sortedProbability[i][j-1]][1]) &&
+                            min == Float.valueOf(this.predictedTestData[i][this.sortedProbability[i][j-1]][1]))) {
+                        if (min > Float.valueOf(this.predictedTestData[i][k][1]) &&
+                                Float.valueOf(this.predictedTestData[i][k][1]) > Float.valueOf(this.predictedTestData[i][this.sortedProbability[i][j-1]][1])) {
+                        }
+                        if (Float.valueOf(this.predictedTestData[i][k][1]) > Float.valueOf(this.predictedTestData[i][this.sortedProbability[i][j-1]][1]) &&
+                                k != this.sortedProbability[i][j-1]) {
+                        }
+                        min = Float.valueOf(this.predictedTestData[i][k][1]);
+                        tempIndex = k;
+                    }
+                }
+                this.sortedProbability[i][j] = tempIndex;
+            }
         }
-
-
-
-
-
-
     }
 }

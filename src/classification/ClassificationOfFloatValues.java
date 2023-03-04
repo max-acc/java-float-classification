@@ -27,6 +27,10 @@ public class ClassificationOfFloatValues {
     private boolean dataSubdivisionBool = false; // Data has been divided into training and test data
     private String MLAlgorithm;     // Variable for saving which machine learning algorithm has been used
 
+    // --- Classification result data variables
+    private String[][][] predictedTestData;
+    private int[][] sortedProbability;
+
 
     // Function to add the members of the class
     public float[][] output() { return this.predictorData; }
@@ -83,6 +87,13 @@ public class ClassificationOfFloatValues {
 
 
     // --- Functions for evaluating the machine learning results -------------------------------------------------------
+    public void evaluateResults() {
+        DATA_evaluation evaluationObject    = new DATA_evaluation(this.testDataResults,
+                this.columnCount - this.numberOfTrainingData,
+                this.predictedTestData,
+                this.sortedProbability);
+        evaluationObject.confusionMatrix();
+    }
     public void confusionMatrix() {
         if (this.MLAlgorithm == "DistanceClassification") {
             System.out.println("nice confusion");
@@ -134,6 +145,10 @@ public class ClassificationOfFloatValues {
             // Testing the distance classification model
             classificationObject.setTestData(this.testDataPredictors, this.testDataResults, this.rowCount, this.columnCount - this.numberOfTrainingData);
             classificationObject.testModel();
+
+            // Get the test data
+            this.predictedTestData  = classificationObject.getPredictedTestData();
+            this.sortedProbability  = classificationObject.getSortedProbability();
         }
 
     }
