@@ -9,7 +9,7 @@ public class Main {
         // in the same project
         boolean index = true;
         boolean header = true;
-        String dataset = "Iris_unordered.csv";
+        String dataset = "Iris_unordered_2.csv";
 
         ClassificationOfFloatValues ob = new ClassificationOfFloatValues(dataset);
         ob.setIndex(true);

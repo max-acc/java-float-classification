@@ -39,6 +39,10 @@ public class DistanceClassification {
         calcFeatureMean();
     }
 
+    protected int getNumberOfClasses () {
+        return this.numberOfClasses;
+    }
+
     protected float[][][] getSortedClassificationData() {
         return this.sortedClassificationData;
     }
