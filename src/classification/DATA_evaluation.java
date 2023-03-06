@@ -46,15 +46,15 @@ public class DATA_evaluation {
                 this.confustionMatrix[this.sortedProbability[i][0]][this.sortedProbability[i][0]]++;
             }
             else {
-                /*
-                for (int j = 0; j < this.columnCount; j++) {
+
+                for (int j = 0; j < this.numberOfClasses; j++) {
                     if (this.testDataResults[i].equals(this.predictedTestData[i][this.sortedProbability[i][j]][0])) {
                         this.confustionMatrix[this.sortedProbability[i][0]][this.sortedProbability[i][j]]++;
                     }
                 }
 
-                 */
-                this.confustionMatrix[this.sortedProbability[i][0]][1]++;
+
+                //this.confustionMatrix[this.sortedProbability[i][0]][1]++;
             }
 
         }
