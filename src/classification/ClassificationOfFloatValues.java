@@ -30,6 +30,7 @@ public class ClassificationOfFloatValues {
     // --- Classification result data variables
     private String[][][] predictedTestData;
     private int[][] sortedProbability;
+    private int numberOfClasses;
 
 
     // Function to add the members of the class
@@ -91,7 +92,8 @@ public class ClassificationOfFloatValues {
         DATA_evaluation evaluationObject    = new DATA_evaluation(this.testDataResults,
                 this.columnCount - this.numberOfTrainingData,
                 this.predictedTestData,
-                this.sortedProbability);
+                this.sortedProbability,
+                this.numberOfClasses);
         evaluationObject.confusionMatrix();
     }
     public void confusionMatrix() {
@@ -145,6 +147,8 @@ public class ClassificationOfFloatValues {
             // Testing the distance classification model
             classificationObject.setTestData(this.testDataPredictors, this.testDataResults, this.rowCount, this.columnCount - this.numberOfTrainingData);
             classificationObject.testModel();
+
+            this.numberOfClasses = classificationObject.getNumberOfClasses();
 
             // Get the test data
             this.predictedTestData  = classificationObject.getPredictedTestData();
