@@ -115,14 +115,14 @@ public class DATA_evaluation {
             }
 
         }
-        /*
+
         for (int i = 0; i < this.numberOfClasses; i++) {
             for (int j = 0; j < this.numberOfClasses; j++) {
                 System.out.print(confusionMatrixNormalized[i][j] + " ");
             }
             System.out.println();
         }
-        */
+
 
         return confusionMatrixNormalized;
     }
