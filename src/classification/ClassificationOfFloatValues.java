@@ -94,7 +94,9 @@ public class ClassificationOfFloatValues {
                 this.predictedTestData,
                 this.sortedProbability,
                 this.numberOfClasses);
-        int[][] asdf = evaluationObject.getConfusionMatrixSimple();
+        System.out.println("\nSimple Confusion Matrix");
+        evaluationObject.getConfusionMatrixSimple();
+        System.out.println("\nNormalized Confusion Matrix");
         evaluationObject.getConfusionMatrixNormalized();
     }
     public void confusionMatrix() {

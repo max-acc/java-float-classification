@@ -177,8 +177,8 @@ public class DistanceClassification {
                 tempDelta[j][this.rowCount -1] = (float) Math.sqrt(tempCalcDistance);
                 this.predictedTestData[i][j][1] = Float.toString(tempDelta[j][this.rowCount -1]);
 
-                System.out.print(" " + this.predictedTestData[i][j][0] + " ");
-                System.out.println(this.predictedTestData[i][j][1]);
+                //System.out.print(" " + this.predictedTestData[i][j][0] + " ");
+                //System.out.println(this.predictedTestData[i][j][1]);
 
 
 

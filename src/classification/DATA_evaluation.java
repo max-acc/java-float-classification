@@ -50,14 +50,14 @@ public class DATA_evaluation {
         }
 
 
-
+        /*
         for (int i = 0; i < this.numberOfClasses; i++) {
             for (int j = 0; j < this.numberOfClasses; j++) {
                 System.out.print(this.confustionMatrix[i][j] + " ");
             }
             System.out.println();
         }
-
+        */
 
     }
 
@@ -90,6 +90,7 @@ public class DATA_evaluation {
             }
             System.out.println();
         }
+
 
         return confusionMatrixSimple;
     }
