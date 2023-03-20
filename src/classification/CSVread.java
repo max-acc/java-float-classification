@@ -68,6 +68,7 @@ public class CSVread {
             // Using , as a delimiter for separating the line input
             rowScanner.useDelimiter(",");
             for (int i = 0; rowScanner.hasNext(); i++) {
+                //System.out.println(rowScanner);
                 // Skip if there is an index
                 if ((index == true && skip == true) || i == rowCount) {
                     skip = false;
@@ -77,7 +78,10 @@ public class CSVread {
                     if (i == rowCount) {
                         break;
                     }
-                }values[i] = Float.parseFloat(rowScanner.next());
+                }
+                String tempVar = rowScanner.next();
+                //System.out.println(tempVar);
+                values[i] = Float.parseFloat(tempVar);
             }
         }
         return values;
