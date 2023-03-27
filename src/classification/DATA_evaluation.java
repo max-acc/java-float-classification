@@ -21,6 +21,7 @@ public class DATA_evaluation {
         this.createConfusionMatrix = false;
     }
 
+    // --- Function for creating a basic confusion matrix for further calculations -------------------------------------
     private void confusionMatrix() {
 
         // Resetting the confusion matrix
@@ -31,7 +32,6 @@ public class DATA_evaluation {
         }
 
         for (int i = 0; i < this.columnCount; i++) {
-            //System.out.println(this.testDataResults[i] + " " + this.predictedTestData[i][this.sortedProbability[i][0]][0]);
             if (this.testDataResults[i].equals(this.predictedTestData[i][this.sortedProbability[i][0]][0])) {
                 this.confustionMatrix[this.sortedProbability[i][0]][this.sortedProbability[i][0]]++;
             }
@@ -42,26 +42,26 @@ public class DATA_evaluation {
                         this.confustionMatrix[this.sortedProbability[i][0]][this.sortedProbability[i][j]]++;
                     }
                 }
-
-
-                //this.confustionMatrix[this.sortedProbability[i][0]][1]++;
             }
+        }
+    }
 
+    // --- Printing a basic confusion matrix
+    protected void getConfusionMatrix() {
+        if (!this.createConfusionMatrix) {
+            confusionMatrix();
         }
 
-
-        /*
         for (int i = 0; i < this.numberOfClasses; i++) {
             for (int j = 0; j < this.numberOfClasses; j++) {
-                System.out.print(this.confustionMatrix[i][j] + " ");
+                System.out.print(confustionMatrix[i][j] + " ");
             }
             System.out.println();
         }
-        */
-
     }
 
-    protected int[][] getConfusionMatrixSimple() {
+    // --- Printing a simple confusion matrix
+    protected void getConfusionMatrixSimple() {
         if (!this.createConfusionMatrix) {
             confusionMatrix();
         }
@@ -82,19 +82,18 @@ public class DATA_evaluation {
             }
         }
 
-
-
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < this.numberOfClasses; i++) {
             for (int j = 0; j < 2; j++) {
                 System.out.print(confusionMatrixSimple[i][j] + " ");
             }
             System.out.println();
         }
 
-
-        return confusionMatrixSimple;
+        //return confusionMatrixSimple;
     }
-    protected float[][] getConfusionMatrixNormalized() {
+
+    // --- Printing a normalized confusion matrix
+    protected void getConfusionMatrixNormalized() {
         if (!this.createConfusionMatrix) {
             confusionMatrix();
         }
@@ -110,8 +109,6 @@ public class DATA_evaluation {
                 continue;
             }
             for (int j = 0; j < this.numberOfClasses; j++) {
-                //System.out.println(this.confustionMatrix[i][j]);
-                //System.out.println(tempCount);
                 confusionMatrixNormalized[i][j] = (float)this.confustionMatrix[i][j] / (float)tempCount;
             }
 
@@ -124,7 +121,6 @@ public class DATA_evaluation {
             System.out.println();
         }
 
-
-        return confusionMatrixNormalized;
+        //return confusionMatrixNormalized;
     }
 }

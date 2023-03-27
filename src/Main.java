@@ -7,8 +7,6 @@ public class Main {
     public static void main (String[] args) throws Exception {
         // Creating of instance of second class present
         // in the same project
-        boolean index = true;
-        boolean header = true;
         String dataset = "Iris_unordered_2.csv";
         dataset = "Dry_Bean_Dataset.csv";
 
@@ -22,10 +20,13 @@ public class Main {
         ob.dataValidation(0.7f);
         ob.dataProcessing();
         ob.dataSubdivision();
-        //System.out.println(ob.feedback()[0][2]);
+
         ob.distanceClassification();
+
+        ob.setEvaluation("Confusion Matrix");
+        ob.setEvaluation("Simple Confusion Matrix");
+        ob.setEvaluation("Normalized Confusion Matrix");
 
         ob.evaluateResults();
     }
-
 }

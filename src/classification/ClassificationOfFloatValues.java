@@ -32,6 +32,8 @@ public class ClassificationOfFloatValues {
     private int[][] sortedProbability;
     private int numberOfClasses;
 
+    private boolean[] validationModel = {false, false, false};
+
 
     // Function to add the members of the class
     public float[][] output() { return this.predictorData; }
@@ -47,12 +49,12 @@ public class ClassificationOfFloatValues {
         this.datasetName = dataset;
     }
 
-    // --- Function for creating
+    // --- Function for processing the data (reading and writing the data to an array)
     public void dataProcessing() throws Exception {
+        // Get row and column count
         this.rowCount = CSVread.calcRowCount(this.datasetName, this.index);
         this.columnCount = CSVread.calcColumnCount(this.datasetName, this.index);
-        //System.out.println(this.rowCount);
-        //System.out.println(this.columnCount);
+        // Get predictor and result data
         this.predictorData = CSVread.transformPredictorData(this.datasetName, this.index, this.header, this.columnCount, this.rowCount);
         this.resultData = CSVread.transformResultData(this.datasetName, this.index, this.header, this.columnCount, this.rowCount);
         this.dataProcessingBool = true;
@@ -77,35 +79,57 @@ public class ClassificationOfFloatValues {
 
 
     // --- Functions for additional user control -----------------------------------------------------------------------
-    // --- Function for changing the ratio between training and testing data
+    // --- Functions for setting the index and header data
     public void setIndex (boolean index) { this.index = index; }
+
     public void setHeader (boolean header) { this.header = header; }
+
+    // --- Function for changing the data density to clear extreme values | Not working
     public void setDensity (float density) {this.density = density;}
+
+    // --- Function for changing the ratio between training and testing data
     public void dataValidation (float trainingData) {
         this.validation[0] = trainingData;
         this.validation[1] = 1- trainingData;
     }
+    // --- Function for setting the validation model
+    public void setEvaluation(String evaluationName) {
+        if (evaluationName.equals("Confusion Matrix")) {
+            this.validationModel[0] = true;
+        }else if (evaluationName.equals("Simple Confusion Matrix")) {
+            this.validationModel[1] = true;
+        }else if (evaluationName.equals("Normalized Confusion Matrix")) {
+            this.validationModel[2] = true;
+        }
+    }
 
 
     // --- Functions for evaluating the machine learning results -------------------------------------------------------
+    // --- Function for printing confusion matrices
     public void evaluateResults() {
+        // Creating an object to calculate confusion matrices
         DATA_evaluation evaluationObject    = new DATA_evaluation(this.testDataResults,
                 this.columnCount - this.numberOfTrainingData,
                 this.predictedTestData,
                 this.sortedProbability,
                 this.numberOfClasses);
-        System.out.println("\nSimple Confusion Matrix");
-        evaluationObject.getConfusionMatrixSimple();
-        System.out.println("\nNormalized Confusion Matrix");
-        evaluationObject.getConfusionMatrixNormalized();
-    }
-    public void confusionMatrix() {
-        if (this.MLAlgorithm == "DistanceClassification") {
-            System.out.println("nice confusion");
+
+        // Printing a basic confusion matrix
+        if (this.validationModel[0] == true) {
+            System.out.println("\nConfusion Matrix");
+            evaluationObject.getConfusionMatrix();
         }
-        else {
-            System.out.println("There is no algorithm");
+        // Printing a simplified confusion matrix
+        if (this.validationModel[1] == true) {
+            System.out.println("\nSimple Confusion Matrix");
+            evaluationObject.getConfusionMatrixSimple();
         }
+        // Printing a normalized confusion matrix
+        if (this.validationModel[2] == true) {
+            System.out.println("\nNormalized Confusion Matrix");
+            evaluationObject.getConfusionMatrixNormalized();
+        }
+
     }
 
 
@@ -113,22 +137,27 @@ public class ClassificationOfFloatValues {
     // --- Function for returning usable index data
     private int returnIndex() {
         // If there is an index it returns -1 because the usable data of the processed data has one element less
+        // The index does not belong to the important data
         if (this.index == true) { return -1; } else { return 0; }
     }
 
-    //
+    // --- Function for checking if all required processes have been completed successful before starting the
+    // classification algorithms
     private boolean checkRequiredProcesses () {
+        // dataProcessingBool:  Process the CSV data (reading)
+        // dataSubdivisionBool: Dividing the data into training and testing data
         if (this.dataProcessingBool == true &&
             this.dataSubdivisionBool == true) {
             return true;
+        }else {
+            if (this.dataProcessingBool == false) {
+                System.out.println("Error 310 | The data has not been divided into training and testing data!");
+            }
+            if (this.dataSubdivisionBool == false) {
+                System.out.println("Error 311 | The data has not been divided into training and testing data!");
+            }
+            return false;
         }
-        if (this.dataProcessingBool == false) {
-            System.out.println("Error 310 | The data has not been divided into training and testing data!");
-        }
-        if (this.dataSubdivisionBool == false) {
-            System.out.println("Error 311 | The data has not been divided into training and testing data!");
-        }
-        return false;
     }
 
 
@@ -151,9 +180,10 @@ public class ClassificationOfFloatValues {
             classificationObject.setTestData(this.testDataPredictors, this.testDataResults, this.rowCount, this.columnCount - this.numberOfTrainingData);
             classificationObject.testModel();
 
+            // Return the number of found classes
             this.numberOfClasses = classificationObject.getNumberOfClasses();
 
-            // Get the test data
+            // Get the predicted text data
             this.predictedTestData  = classificationObject.getPredictedTestData();
             this.sortedProbability  = classificationObject.getSortedProbability();
         }
