@@ -111,32 +111,45 @@ public class DistanceClassification {
         }
     }
 
-    // --- Function for sorting the classified data
+    // --- Function for sorting the test data which are going to be classified
     private void sortClassificationData() {
         ArrayList<ArrayList<ArrayList<Float>>> tempSortedClassificationData = new ArrayList<>();
         int [] tempNumberDataPerClass = new int[this.rowCount -1];
+        // Resetting the array
         for (int i = 0; i < rowCount -1; i++) {
             tempNumberDataPerClass[i] = 0;
         }
 
+        // Creating an array list for saving the sorted classification data
+        // This has to be done because array list sometimes cause unintended behaviour
+        // Going through every class
         for (int i = 0; i < this.numberOfClasses; i++) {
+            // Adding elements in the second dimension (with a maximum value of the overall count of columns from the data set)
             tempSortedClassificationData.add(new ArrayList<ArrayList<Float>>(this.columnCount));
+            // Going through every column of the prior initialised second dimension
             for (int j = 0; j < this.columnCount; j++) {
+                // Adding elements in the third dimension (with the number of the features)
                 tempSortedClassificationData.get(i).add(new ArrayList<Float>(this.rowCount -1));
             }
         }
 
+        // Going through every column of the dataset
         for (int i = 0; i < this.columnCount; i++) {
+            // Going through every class to try to match the dataset to a class of the sorted classification data
             for (int j = 0; j < this.numberOfClasses; j++) {
+                // If the result of the dataset matches a prior defined class, it will be written to it
                 if (this.trainingDataResults[i].equals(this.classes[j])) {
+                    // Transferring all values to the new array
                     for (int k = 0; k < this.rowCount -1; k++) {
                         tempSortedClassificationData.get(j).get(tempNumberDataPerClass[j]).add(k, this.trainingDataPredictors[i][k]);
                     }
+                    // The number of the data per class is being incremented
                     tempNumberDataPerClass[j]++;
                 }
             }
         }
 
+        // Getting the maximum number of elements which belong to one class
         this.elementsPerClass = tempNumberDataPerClass;
         int maxNumOfElementsPerClass = 0;
         for (int i = 0; i < this.elementsPerClass.length; i++) {
@@ -145,9 +158,10 @@ public class DistanceClassification {
             }
         }
 
+        // Initialising an array for saving the sorted classification data ([class][test data][feature]: float[file data from feature])
         this.sortedClassificationData = new float[this.numberOfClasses][maxNumOfElementsPerClass][this.rowCount -1];
 
-        // Reducing the size of the Array List
+        // Reducing the size of the Array List and writing it to an array
         for (int i = 0; i < this.numberOfClasses; i++) {
             for (int j = 0; j < maxNumOfElementsPerClass; j++) {
                 if (j >= this.elementsPerClass[i]) {
@@ -162,13 +176,18 @@ public class DistanceClassification {
 
     // --- Function for calculating the mean for every feature (training the model)
     private void calcFeatureMean() {
+        // Array Structure: [class][mean per feature]
         this.featureMean = new float[this.numberOfClasses][this.rowCount -1];
+        // Iterating through every class
         for (int i = 0; i < this.numberOfClasses; i++) {
+            // Iterating through every feature
             for (int j = 0; j < this.rowCount -1; j++) {
                 float tempCalcVar = 0;
+                // Adding all elements per class and feature to a temp var
                 for (int k = 0; k < this.elementsPerClass[i]; k++) {
                     tempCalcVar += this.sortedClassificationData[i][k][j];
                 }
+                // Calculating the mean for every feature
                 tempCalcVar /= this.elementsPerClass[i];
                 this.featureMean[i][j] = tempCalcVar;
             }
