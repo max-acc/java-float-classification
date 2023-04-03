@@ -111,7 +111,7 @@ public class DistanceClassification {
         }
     }
 
-    // --- Function for sorting the test data which are going to be classified
+    // --- Function for sorting the test data which is going to be classified
     private void sortClassificationData() {
         ArrayList<ArrayList<ArrayList<Float>>> tempSortedClassificationData = new ArrayList<>();
         int [] tempNumberDataPerClass = new int[this.rowCount -1];
@@ -199,42 +199,47 @@ public class DistanceClassification {
         this.predictedTestData = new String[this.testDataColumnCount][this.numberOfClasses][2];
         this.sortedProbability = new int[this.testDataColumnCount][this.numberOfClasses];
 
-        // Check the distance for every class
-
+        // Check the distance for every column of the test dataset
         for (int i = 0; i < this.testDataColumnCount; i++) {
+            // Create a temporary function for calculating a temporary delta
             float[][] tempDelta = new float[this.numberOfClasses][this.rowCount];
+
+            // Calculating the temporary delta of each row per class
             for (int j = 0; j < this.numberOfClasses; j++) {
+                // Calculating the current delta value per class
                 for (int k = 0; k < this.rowCount -1; k++) {
                     tempDelta[j][k] = this.featureMean[j][k] - this.testDataPredictors[i][k];
                 }
 
+                // Getting the prediction per class
                 this.predictedTestData[i][j][0] = this.classes[j];
+                // Setting temp variables
                 float tempCalcDistance = 0;
 
+                // Calculating the distance between data points (pythagorean theorem)
                 for (int k = 0; k < this.rowCount -1; k++) {
                     tempCalcDistance += (float) Math.pow(tempDelta[j][k], 2);
                 }
-
                 tempDelta[j][this.rowCount -1] = (float) Math.sqrt(tempCalcDistance);
+
+                // Setting the calculated temp delta to the likeliness of a result
                 this.predictedTestData[i][j][1] = Float.toString(tempDelta[j][this.rowCount -1]);
-
-                //System.out.print(" " + this.predictedTestData[i][j][0] + " ");
-                //System.out.println(this.predictedTestData[i][j][1]);
-
-
-
             }
+
             float min = Float.valueOf(this.predictedTestData[i][0][1]);
 
             int tempIndex = 0;
             this.sortedProbability[i][0] = tempIndex;
 
+            // Calculating the index of the class with the most likely outcome (best prediction)
             for (int j = 0; j < this.numberOfClasses; j++) {
                 if (min > Float.valueOf(this.predictedTestData[i][j][1])) {
                     min = Float.valueOf(this.predictedTestData[i][j][1]);
                     tempIndex = j;
                 }
             }
+
+            // Blackbox for sorting the likeliness for every class
             this.sortedProbability[i][0] = tempIndex;
             for (int j = 1; j < this.numberOfClasses; j++) {
                 tempIndex = 0;
