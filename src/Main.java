@@ -16,7 +16,7 @@ public class Main {
         ob.setIndex(true);
         ob.setHeader(true);
 
-        // traingingData = percentage of training data <1
+        // trainingData = percentage of training data <1
         ob.dataValidation(0.7f);
         ob.dataProcessing();
         ob.dataSubdivision();
