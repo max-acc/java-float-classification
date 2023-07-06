@@ -1,18 +1,4 @@
 # <p align="center"><b>Classification of float values in Java</b></p>
-
-
-## Description
-
-
-## Getting Started
-
-
-### Dependencies
-
-
-### Installing
-
-
 ### Executing the program
 #### Setting up the classification model
 Firstly you have to import a package called "classification" that contains all important functions for classifying a 
